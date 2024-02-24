@@ -1,0 +1,7 @@
+<item>
+  <title>{{title}}</title>
+  <link>{{postFQDNLink}}</link>
+  <pubDate>{{publishDate}}</pubDate>
+  <author>{{author}}</author>
+  <description>{{txt}}</description>
+</item>
