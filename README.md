@@ -48,5 +48,6 @@ Other than these features, MdlogGen should support the following independently o
 
 * Code blocks seem to fold '\n\n' into a single new line
 * Site search requires a Github account
+* RSS is sent as a Markdown wrapped in pre, instead of being html-rendered
 * // TODO add more
 

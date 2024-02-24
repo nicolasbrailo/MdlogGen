@@ -19,7 +19,7 @@ rss_items = []
 for docpath in docs:
     doc = read_md_doc(docpath)
     doc['postFQDNLink'] = site_fqdn + get_html_link_from_md_rel_path(md_src, html_dst, docpath)
-    doc['txt'] = html.escape(doc['txt'])
+    doc['txt'] = doc['txt']
     doc['title'] = html.escape(doc['title'])
     rss_item = apply_template(os.path.join(GENSCRIPT_DIR, 'templates', 'rss_item.xml'), doc)
     rss_items.append(rss_item)

@@ -3,5 +3,7 @@
   <link>{{postFQDNLink}}</link>
   <pubDate>{{publishDate}}</pubDate>
   <author>{{author}}</author>
-  <description>{{txt}}</description>
+  <description><![CDATA[
+    <pre>{{txt}}</pre>
+  ]]></description>
 </item>
