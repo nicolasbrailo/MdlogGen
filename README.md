@@ -26,6 +26,7 @@ Other than these features, MdlogGen should support the following independently o
 
 * mlogen will process all md files in the specified prefix directory
 * If the filename matches a path like 'prefix/YYYY/MM' (eg: 'site_md/2010/11_23_MyPost.md') it will be considered a post. This means it will be included in dynamic content (indexes, rss).
+* Dynamic content is sorted by file name (if two posts are done the same day, their order will be alphabetical)
 * Documents must start with a title ('# TITLE\n'). If a document doesn't start with a title, things will break (a blank title is acceptable: '#\n')
 * Documents will be split in title, txt and (optionally) comments. Comments, if present, are identified by the string '# Comments'.
 * Lines starting with '@meta' are metadata and alter the html generation process. They won't be included in the final document.
