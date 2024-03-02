@@ -43,7 +43,7 @@ run(["python3", rss_gen_script, str(cfg['rss_entries_count']), cfg['md_source_di
 
 if 'md_to_html_single_files' in cfg:
     for single_file in cfg['md_to_html_single_files']:
-        run(["python3", cfg_path, html_gen_script, single_file['dst'], single_file['src']])
+        run(["python3", html_gen_script, cfg_path, single_file['dst'], single_file['src']])
 
 for static_asset in ["style.css", "codehighlight.js", "search.js"]:
     static_asset_path = os.path.join(MdlogGen_Path, 'site_design', static_asset)

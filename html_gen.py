@@ -49,19 +49,12 @@ def htmlize_rel_links(md_srcs_path, html_dst_path, md):
     return md
 
 
-with open(sys.argv[1], 'r') as fp:
-    SITE_CFG = json.loads(fp.read())
-
-HTML_GEN_DEST = sys.argv[2]
-MD_SRCS = sys.argv[3:]
-md_rules = get_md_convert_rules(HTML_GEN_DEST, MD_SRCS)
-
-for md_src_dir, md_path, html_path in md_rules:
+def md_to_html(md_src_dir, md_path, html_path):
     print(md_path, " -> ", html_path)
     doc = read_md_doc(md_path)
     doc['dstHtmlFile'] = f'/{html_path}'
     if doc['docType'] == 'skipHtmlGen':
-        continue
+        return
 
     for htmlizable_key in ['txt', 'comments', 'extraNav', 'commentCountTxt']:
         if htmlizable_key not in doc or doc[htmlizable_key] is None:
@@ -105,4 +98,19 @@ for md_src_dir, md_path, html_path in md_rules:
         os.makedirs(tgt_dir)
     with open(html_path, 'w') as fp:
         fp.write(html)
+
+with open(sys.argv[1], 'r') as fp:
+    SITE_CFG = json.loads(fp.read())
+
+HTML_GEN_DEST = sys.argv[2]
+MD_SRCS = sys.argv[3:]
+md_rules = get_md_convert_rules(HTML_GEN_DEST, MD_SRCS)
+
+#for md_src_dir, md_path, html_path in md_rules:
+#    md_to_html(md_src_dir, md_path, html_path)
+
+import multiprocessing
+with multiprocessing.Pool() as pool:
+    pool.starmap(md_to_html, md_rules)
+
 
