@@ -54,6 +54,29 @@ def validate_rel_links(md_src, md):
             raise RuntimeError(f'Found absolute path link this will break processing: md file {md_src} links to {md_link}')
     return md
 
+def include_includes(md_src, md):
+    """ Limitation: an include loop will be looping forever """
+    INCLUDE_TOK = '\n@include '
+    incl_i = md.find(INCLUDE_TOK)
+    while incl_i != -1:
+        incl_f = md.find('\n', incl_i + len(INCLUDE_TOK))
+        incl = md[incl_i:incl_f].split(INCLUDE_TOK)[1]
+        if not os.path.exists(incl):
+            raise RuntimeError(f'Failed relative link normalization: md file {md_src} links to non-existent file {incl}')
+        print(f'Including doc {incl}')
+        incl_doc = read_md_doc(incl)
+        incl_md = f'''
+## [{incl_doc["title"]}]({incl_doc["srcFile"]})
+
+Published {incl_doc["publishDate"]}
+
+{incl_doc["txt"]}
+'''
+        md = md[:incl_i] + '\n' + incl_md + md[incl_f:]
+        print("REPL ", incl_i)
+        incl_i = md.find(INCLUDE_TOK)
+    return md
+
 
 def read_md_doc(fpath):
     doc = {
@@ -75,6 +98,7 @@ def read_md_doc(fpath):
     # Extract title out of doc (needs to be the first line)
     # eg: '## foo bar\n'
     assert(doc['txt'][0] == '#'), f'Format fail for {fpath}'
+    doc['txt'] = include_includes(fpath, doc['txt'])
     doc['title'] = doc['txt'][doc['txt'].find(' '):doc['txt'].find('\n')].strip()
     doc['txt'] = doc['txt'][doc['txt'].find('\n')+1:]
     doc['txt'] = validate_rel_links(fpath, doc['txt'])
