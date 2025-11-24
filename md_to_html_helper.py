@@ -81,7 +81,7 @@ class CodeProcessor(BlockProcessor):
                 for i in range(0, block_num + 1):
                     blocks.pop(0)
                 if len(block_after_marker) > 0:
-                    blocks.append('\n' + block_after_marker)
+                    blocks.insert(0, '\n' + block_after_marker)
                 return True  # or could have had no return statement
         # No closing marker!  Restore and do nothing
         blocks[0] = original_block
